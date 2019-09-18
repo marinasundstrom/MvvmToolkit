@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>MvvmToolkit.Navigation.Wpf</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MvvmToolkit.Navigation\MvvmToolkit.Navigation.csproj" />
+    <ProjectReference Include="..\MvvmToolkit.Wpf\MvvmToolkit.Wpf.csproj" />
+  </ItemGroup>
+
+</Project>

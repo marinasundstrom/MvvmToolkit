@@ -1,0 +1,44 @@
+﻿<Window
+    x:Class="MvvmSample.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MvvmSample"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Search Engine"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid>
+        <TextBox
+            x:Name="SearchTextBox"
+            Width="120"
+            Margin="219,123,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+        <Button
+            x:Name="SearchButton"
+            Margin="400,123,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding SearchCommand}"
+            Content="Search" />
+        <ListView
+            x:Name="SearchResults"
+            Margin="138,217,169,58"
+            ItemsSource="{Binding SearchResults}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text="{Binding Date}" />
+                        <TextBlock Text="{Binding Description}" />
+                        <TextBlock Text="{Binding Link}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

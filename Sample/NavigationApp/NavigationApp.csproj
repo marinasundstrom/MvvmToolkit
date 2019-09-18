@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <StartupObject>NavigationApp.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MvvmToolkit.Navigation.WPF\MvvmToolkit.Navigation.WPF.csproj" />
+    <ProjectReference Include="..\..\MvvmToolkit.Navigation\MvvmToolkit.Navigation.csproj" />
+    <ProjectReference Include="..\..\MvvmToolkit\MvvmToolkit.csproj" />
+  </ItemGroup>
+
+</Project>

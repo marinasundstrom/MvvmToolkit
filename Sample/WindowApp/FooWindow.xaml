@@ -1,0 +1,26 @@
+﻿<wpf:BaseWindow
+    x:Class="WindowApp.FooWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WindowApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:MvvmToolkit.Windowing.WPF;assembly=MvvmToolkit.Windowing.WPF"
+    Title="FooWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid>
+        <Button
+            Margin="295,197,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding OpenDialogCommand}"
+            Content="Button" />
+        <Label
+            Margin="168,110,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="{Binding Name}" />
+    </Grid>
+</wpf:BaseWindow>
