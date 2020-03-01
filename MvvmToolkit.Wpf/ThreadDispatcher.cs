@@ -4,7 +4,7 @@ using System.Windows.Threading;
 
 namespace MvvmToolkit
 {
-    public class ThreadDispatcher : IThreadDispatcher
+    public sealed class ThreadDispatcher : IThreadDispatcher
     {
         private readonly Dispatcher dispatcher;
 

@@ -5,8 +5,8 @@ using System.Windows;
 
 namespace MvvmToolkit.Windowing.WPF
 {
-    public class BaseDialog<TResult>
-    : Window, IDialogWindow<TResult>
+    public abstract class BaseDialog<TResult>
+        : Window, IDialogWindow<TResult>
     {
         public BaseDialog() { }
 

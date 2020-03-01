@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace MvvmToolkit.Windowing
 {
-    public class WindowManager : IWindowManager
+    public sealed class WindowManager : IWindowManager
     {
         private readonly IServiceProvider serviceProvider;
 

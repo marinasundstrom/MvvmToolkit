@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace MvvmToolkit.Wpf
 {
-    public class TreeHelper
+    public static class TreeHelper
     {
         public static T GetParent<T>(DependencyObject child)
             where T : DependencyObject

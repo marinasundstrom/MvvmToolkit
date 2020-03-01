@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace MvvmToolkit.Windowing.WPF
 {
-    public class BaseWindow
+    public abstract class BaseWindow
         : Window, IWindow
     {
         public BaseWindow() { }

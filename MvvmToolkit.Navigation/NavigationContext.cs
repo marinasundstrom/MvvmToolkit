@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MvvmToolkit.Navigation
 {
-    public class NavigationContext
+    public sealed class NavigationContext
     {
         public NavigationContext(Uri navigationUri, IReadOnlyDictionary<string, object> parameters)
         {
