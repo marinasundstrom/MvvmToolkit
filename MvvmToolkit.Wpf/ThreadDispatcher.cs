@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace MvvmToolkit
@@ -14,7 +15,12 @@ namespace MvvmToolkit
 
         public void RunOnMainThread(Action action)
         {
-            dispatcher.BeginInvoke(action);
+            dispatcher.Invoke(action);
+        }
+
+        public async Task RunOnMainThreadAsync(Func<Task> action)
+        {
+            await dispatcher.InvokeAsync(action);
         }
     }
 }

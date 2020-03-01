@@ -39,47 +39,34 @@ namespace MvvmToolkit.Navigation
             return Navigate(new Uri(navigationUri, UriKind.RelativeOrAbsolute));
         }
 
-        public Task Navigate(Uri navigationUri)
+        public async Task Navigate(Uri navigationUri)
         {
-            var taskCompletionSource = new TaskCompletionSource<object>();
+            navigationUri = new Uri(new Uri($"package://{Assembly.GetExecutingAssembly().GetName().Name}/"), navigationUri);
 
-            try
+            Type pageType = ResolvePageType(navigationUri);
+
+            await serviceProvider.GetService<IThreadDispatcher>().RunOnMainThreadAsync(async () =>
             {
-                navigationUri = new Uri(new Uri($"package://{Assembly.GetExecutingAssembly().GetName().Name}/"), navigationUri);
+                IReadOnlyDictionary<string, object> parameters = ParseQueryParameters(navigationUri.Query);
 
-                Type pageType = ResolvePageType(navigationUri);
+                var navigationContext = new NavigationContext(
+                    new Uri(navigationUri.LocalPath, UriKind.Relative),
+                    parameters);
 
-                serviceProvider.GetService<IThreadDispatcher>().RunOnMainThread(async () =>
+                object page = serviceProvider.GetService(pageType);
+
+                if (frame.NavigationService.Content is IPage page1)
                 {
-                    IReadOnlyDictionary<string, object> parameters = ParseQueryParameters(navigationUri.Query);
+                    await page1.OnNavigatedFrom(navigationContext).ConfigureAwait(false);
+                }
 
-                    var navigationContext = new NavigationContext(
-                        new Uri(navigationUri.LocalPath, UriKind.Relative),
-                        parameters);
+                frame.Navigate(page);
 
-                    object page = serviceProvider.GetService(pageType);
-
-                    if (frame.NavigationService.Content is IPage page1)
-                    {
-                        await page1.OnNavigatedFrom(navigationContext).ConfigureAwait(false);
-                    }
-
-                    frame.Navigate(page);
-
-                    if (page is IPage page2)
-                    {
-                        await page2.OnNavigatedTo(navigationContext).ConfigureAwait(false);
-                    }
-
-                    taskCompletionSource.SetResult(null);
-                });
-            }
-            catch (Exception e)
-            {
-                taskCompletionSource.SetException(e);
-            }
-
-            return taskCompletionSource.Task;
+                if (page is IPage page2)
+                {
+                    await page2.OnNavigatedTo(navigationContext).ConfigureAwait(false);
+                }
+            });
         }
 
         private static IReadOnlyDictionary<string, object> ParseQueryParameters(string query)
