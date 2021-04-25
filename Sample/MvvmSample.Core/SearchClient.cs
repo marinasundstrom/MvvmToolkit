@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MvvmSample
 {
-    internal class SearchClient : ISearchClient
+    public class SearchClient : ISearchClient
     {
         private readonly Random random = new Random();
 
