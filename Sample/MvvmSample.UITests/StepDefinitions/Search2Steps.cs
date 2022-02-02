@@ -19,7 +19,7 @@ public class Search2Steps : TestsBase
     {
         SearchButton.Click();
 
-        await Task.Delay(200); 
+        await Task.Delay(50); 
     }
 
     [Then(@"the Search box should be disabled")]
