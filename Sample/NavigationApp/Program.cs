@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace NavigationApp
+namespace NavigationApp;
+
+internal static class Program
 {
-    internal static class Program
+    [STAThread]
+    private static int Main(string[] args)
     {
-        [STAThread]
-        private static int Main(string[] args)
-        {
-            var app = new App();
-            return app.Run();
-        }
+        var app = new App();
+        return app.Run();
     }
 }

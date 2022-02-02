@@ -1,7 +1,6 @@
-﻿namespace WindowApp
+﻿namespace WindowApp;
+
+public class DialogResult
 {
-    public class DialogResult
-    {
-        public string Name { get; internal set; }
-    }
+    public string Name { get; internal set; }
 }

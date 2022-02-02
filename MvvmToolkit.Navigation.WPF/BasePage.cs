@@ -2,44 +2,43 @@
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace MvvmToolkit.Navigation.WPF
+namespace MvvmToolkit.Navigation.WPF;
+
+public abstract class BasePage : Page, IPage
 {
-    public abstract class BasePage : Page, IPage
+    public BasePage() { }
+
+    public BasePage(INotifyPropertyChanged viewModel)
     {
-        public BasePage() { }
+        DataContext = viewModel;
 
-        public BasePage(INotifyPropertyChanged viewModel)
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
+    }
+
+    public virtual async Task OnNavigatedTo(NavigationContext navigationContext)
+    {
+        if (DataContext is INavigationAware navigationAware)
         {
-            DataContext = viewModel;
-
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
+            await navigationAware.OnNavigatedTo(navigationContext);
         }
+    }
 
-        public virtual async Task OnNavigatedTo(NavigationContext navigationContext)
+    public virtual async Task OnNavigatedFrom(NavigationContext navigationContext)
+    {
+        if (DataContext is INavigationAware navigationAware)
         {
-            if (DataContext is INavigationAware navigationAware)
-            {
-                await navigationAware.OnNavigatedTo(navigationContext);
-            }
+            await navigationAware.OnNavigatedFrom(navigationContext);
         }
+    }
 
-        public virtual async Task OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            if (DataContext is INavigationAware navigationAware)
-            {
-                await navigationAware.OnNavigatedFrom(navigationContext);
-            }
-        }
+    protected virtual void OnLoaded(object sender, System.Windows.RoutedEventArgs e)
+    {
 
-        protected virtual void OnLoaded(object sender, System.Windows.RoutedEventArgs e)
-        {
+    }
 
-        }
+    protected virtual void OnUnloaded(object sender, System.Windows.RoutedEventArgs e)
+    {
 
-        protected virtual void OnUnloaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
     }
 }

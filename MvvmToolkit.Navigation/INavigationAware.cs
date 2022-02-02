@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-namespace MvvmToolkit.Navigation
+namespace MvvmToolkit.Navigation;
+
+public interface INavigationAware
 {
-    public interface INavigationAware
-    {
-        Task OnNavigatedTo(NavigationContext navigationContext);
-        Task OnNavigatedFrom(NavigationContext navigationContext);
-    }
+    Task OnNavigatedTo(NavigationContext navigationContext);
+    Task OnNavigatedFrom(NavigationContext navigationContext);
 }

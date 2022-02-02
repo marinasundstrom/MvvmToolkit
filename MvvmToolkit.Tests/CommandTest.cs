@@ -1,52 +1,52 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Xunit;
 
-namespace MvvmToolkit.Tests
+namespace MvvmToolkit.Tests;
+
+public class CommandTest
 {
-    public class CommandTest
+    [Fact(DisplayName = "Is executed")]
+    public async Task IsExecuted()
     {
-        [Fact(DisplayName = "Is executed")]
-        public async Task IsExecuted()
+        bool executed = false;
+
+        var command = new Command(() =>
         {
-            bool executed = false;
+            executed = true;
+        });
 
-            var command = new Command(() =>
-            {
-                executed = true;
-            });
+        await command.Execute();
 
-            await command.Execute();
+        Assert.True(executed);
+    }
 
-            Assert.True(executed);
-        }
+    [Fact(DisplayName = "Async action is executed on calling thread")]
+    public void IsExecutedOnCallingThread()
+    {
+        bool executed = false;
 
-        [Fact(DisplayName = "Async action is executed on calling thread")]
-        public void IsExecutedOnCallingThread()
+        Thread mainThread = Thread.CurrentThread;
+        Thread commandThread = null;
+
+        var command = new Command(() =>
         {
-            bool executed = false;
+            commandThread = Thread.CurrentThread;
+            executed = true;
+        });
 
-            Thread mainThread = Thread.CurrentThread;
-            Thread commandThread = null;
+        (command as ICommand).Execute(null);
 
-            var command = new Command(() =>
-            {
-                commandThread = Thread.CurrentThread;
-                executed = true;
-            });
+        Assert.True(executed);
+        Assert.Equal(mainThread, commandThread);
 
-            (command as ICommand).Execute(null);
+        executed = false;
 
-            Assert.True(executed);
-            Assert.Equal(mainThread, commandThread);
+        command.Execute();
 
-            executed = false;
-
-            command.Execute();
-
-            Assert.True(executed);
-            Assert.Equal(mainThread, commandThread);
-        }
+        Assert.True(executed);
+        Assert.Equal(mainThread, commandThread);
     }
 }

@@ -5,98 +5,97 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Controls;
 
-namespace MvvmToolkit.Navigation
+namespace MvvmToolkit.Navigation;
+
+public class NavigationService : INavigationService
 {
-    public class NavigationService : INavigationService
+    private readonly Frame frame;
+    private readonly IServiceProvider serviceProvider;
+
+    public NavigationService(Frame frame, IServiceProvider serviceProvider)
     {
-        private readonly Frame frame;
-        private readonly IServiceProvider serviceProvider;
+        this.frame = frame;
+        this.serviceProvider = serviceProvider;
+    }
 
-        public NavigationService(Frame frame, IServiceProvider serviceProvider)
+    public Task GoBack()
+    {
+        frame.GoBack();
+
+        return Task.CompletedTask;
+    }
+
+    public void ClearAllBackEntries()
+    {
+        System.Windows.Navigation.NavigationService navigationService = frame.NavigationService;
+        while (navigationService.CanGoBack)
         {
-            this.frame = frame;
-            this.serviceProvider = serviceProvider;
+            navigationService.RemoveBackEntry();
         }
+    }
 
-        public Task GoBack()
+    public Task Navigate(string navigationUri)
+    {
+        return Navigate(new Uri(navigationUri, UriKind.RelativeOrAbsolute));
+    }
+
+    public async Task Navigate(Uri navigationUri)
+    {
+        navigationUri = new Uri(new Uri($"package://{Assembly.GetExecutingAssembly().GetName().Name}/"), navigationUri);
+
+        Type pageType = ResolvePageType(navigationUri);
+
+        await serviceProvider.GetService<IThreadDispatcher>().RunOnMainThreadAsync(async () =>
         {
-            frame.GoBack();
+            IReadOnlyDictionary<string, object> parameters = ParseQueryParameters(navigationUri.Query);
 
-            return Task.CompletedTask;
-        }
+            var navigationContext = new NavigationContext(
+                new Uri(navigationUri.LocalPath, UriKind.Relative),
+                parameters);
 
-        public void ClearAllBackEntries()
-        {
-            System.Windows.Navigation.NavigationService navigationService = frame.NavigationService;
-            while (navigationService.CanGoBack)
+            object page = serviceProvider.GetService(pageType);
+
+            if (frame.NavigationService.Content is IPage page1)
             {
-                navigationService.RemoveBackEntry();
-            }
-        }
-
-        public Task Navigate(string navigationUri)
-        {
-            return Navigate(new Uri(navigationUri, UriKind.RelativeOrAbsolute));
-        }
-
-        public async Task Navigate(Uri navigationUri)
-        {
-            navigationUri = new Uri(new Uri($"package://{Assembly.GetExecutingAssembly().GetName().Name}/"), navigationUri);
-
-            Type pageType = ResolvePageType(navigationUri);
-
-            await serviceProvider.GetService<IThreadDispatcher>().RunOnMainThreadAsync(async () =>
-            {
-                IReadOnlyDictionary<string, object> parameters = ParseQueryParameters(navigationUri.Query);
-
-                var navigationContext = new NavigationContext(
-                    new Uri(navigationUri.LocalPath, UriKind.Relative),
-                    parameters);
-
-                object page = serviceProvider.GetService(pageType);
-
-                if (frame.NavigationService.Content is IPage page1)
-                {
-                    await page1.OnNavigatedFrom(navigationContext).ConfigureAwait(false);
-                }
-
-                frame.Navigate(page);
-
-                if (page is IPage page2)
-                {
-                    await page2.OnNavigatedTo(navigationContext).ConfigureAwait(false);
-                }
-            });
-        }
-
-        private static IReadOnlyDictionary<string, object> ParseQueryParameters(string query)
-        {
-            var parameters = new Dictionary<string, object>();
-            System.Collections.Specialized.NameValueCollection queryCollection = HttpUtility.ParseQueryString(query);
-            foreach (string key in queryCollection.Keys)
-            {
-                parameters.Add(key, queryCollection[key]);
-            }
-            return parameters;
-        }
-
-        protected virtual Type ResolvePageType(Uri navigationUri)
-        {
-            var assembly = Assembly.GetEntryAssembly();
-            string assemblyName = assembly.GetName().Name;
-            string originalString = navigationUri.LocalPath;
-            int index = -1;
-            string resolvedPageTypeName;
-            if ((index = originalString.IndexOf("?")) > -1)
-            {
-                resolvedPageTypeName = $"{assemblyName}{originalString.Substring(0, index).Replace('/', '.')}";
-            }
-            else
-            {
-                resolvedPageTypeName = $"{assemblyName}{originalString.Replace('/', '.')}";
+                await page1.OnNavigatedFrom(navigationContext).ConfigureAwait(false);
             }
 
-            return assembly.GetType(resolvedPageTypeName);
+            frame.Navigate(page);
+
+            if (page is IPage page2)
+            {
+                await page2.OnNavigatedTo(navigationContext).ConfigureAwait(false);
+            }
+        });
+    }
+
+    private static IReadOnlyDictionary<string, object> ParseQueryParameters(string query)
+    {
+        var parameters = new Dictionary<string, object>();
+        System.Collections.Specialized.NameValueCollection queryCollection = HttpUtility.ParseQueryString(query);
+        foreach (string key in queryCollection.Keys)
+        {
+            parameters.Add(key, queryCollection[key]);
         }
+        return parameters;
+    }
+
+    protected virtual Type ResolvePageType(Uri navigationUri)
+    {
+        var assembly = Assembly.GetEntryAssembly();
+        string assemblyName = assembly.GetName().Name;
+        string originalString = navigationUri.LocalPath;
+        int index = -1;
+        string resolvedPageTypeName;
+        if ((index = originalString.IndexOf("?")) > -1)
+        {
+            resolvedPageTypeName = $"{assemblyName}{originalString.Substring(0, index).Replace('/', '.')}";
+        }
+        else
+        {
+            resolvedPageTypeName = $"{assemblyName}{originalString.Replace('/', '.')}";
+        }
+
+        return assembly.GetType(resolvedPageTypeName);
     }
 }

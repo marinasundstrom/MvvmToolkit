@@ -3,64 +3,63 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MvvmToolkit.Windowing.WPF
+namespace MvvmToolkit.Windowing.WPF;
+
+public abstract class BaseDialog<TResult>
+    : Window, IDialogWindow<TResult>
 {
-    public abstract class BaseDialog<TResult>
-        : Window, IDialogWindow<TResult>
+    public BaseDialog() { }
+
+    public BaseDialog(INotifyPropertyChanged viewModel)
     {
-        public BaseDialog() { }
+        DataContext = viewModel;
+    }
 
-        public BaseDialog(INotifyPropertyChanged viewModel)
+    public event EventHandler Shown;
+
+    public new event EventHandler Closed;
+
+    public async Task<TResult> OnClosed()
+    {
+        if (DataContext is IDialogAware<TResult> wa)
         {
-            DataContext = viewModel;
+            return await wa.OnClosed();
         }
 
-        public event EventHandler Shown;
+        RaiseClosed();
 
-        public new event EventHandler Closed;
+        return default;
+    }
 
-        public async Task<TResult> OnClosed()
+    public virtual async Task OnShown(params object[] args)
+    {
+        base.Show();
+
+        if (DataContext is IWindowAware<TResult> wa)
         {
-            if (DataContext is IDialogAware<TResult> wa)
-            {
-                return await wa.OnClosed();
-            }
-
-            RaiseClosed();
-
-            return default;
+            await wa.OnShown(null);
         }
 
-        public virtual async Task OnShown(params object[] args)
-        {
-            base.Show();
+        RaiseShown();
+    }
 
-            if (DataContext is IWindowAware<TResult> wa)
-            {
-                await wa.OnShown(null);
-            }
+    protected void RaiseShown()
+    {
+        Shown?.Invoke(this, EventArgs.Empty);
+    }
 
-            RaiseShown();
-        }
+    protected void RaiseClosed()
+    {
+        Closed?.Invoke(this, EventArgs.Empty);
+    }
 
-        protected void RaiseShown()
-        {
-            Shown?.Invoke(this, EventArgs.Empty);
-        }
+    public Task OnShown()
+    {
+        throw new NotImplementedException();
+    }
 
-        protected void RaiseClosed()
-        {
-            Closed?.Invoke(this, EventArgs.Empty);
-        }
-
-        public Task OnShown()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IWindow.OnClosed()
-        {
-            throw new NotImplementedException();
-        }
+    Task IWindow.OnClosed()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,39 +1,39 @@
 ﻿using System.Threading.Tasks;
+
 using MvvmToolkit;
 using MvvmToolkit.Windowing;
 
-namespace WindowApp
+namespace WindowApp;
+
+public class DialogViewModel : BindableObject, IDialogAware<string, DialogResult>
 {
-    public class DialogViewModel : BindableObject, IDialogAware<string, DialogResult>
+    private string name;
+
+    public Task OnShown(params object[] args)
     {
-        private string name;
+        return Task.CompletedTask;
+    }
+    public Task OnShown(string arg)
+    {
+        return Task.CompletedTask;
+    }
 
-        public Task OnShown(params object[] args)
-        {
-            return Task.CompletedTask;
-        }
-        public Task OnShown(string arg)
-        {
-            return Task.CompletedTask;
-        }
+    public string Name
+    {
+        get => name;
+        set => SetProperty(ref name, value);
+    }
 
-        public string Name
+    public Task<DialogResult> OnClosed()
+    {
+        return Task.FromResult(new DialogResult()
         {
-            get => name;
-            set => SetProperty(ref name, value);
-        }
+            Name = name
+        });
+    }
 
-        public Task<DialogResult> OnClosed()
-        {
-            return Task.FromResult(new DialogResult()
-            {
-                Name = name
-            });
-        }
-
-        Task IWindowAware.OnClosed()
-        {
-            return Task.CompletedTask;
-        }
+    Task IWindowAware.OnClosed()
+    {
+        return Task.CompletedTask;
     }
 }

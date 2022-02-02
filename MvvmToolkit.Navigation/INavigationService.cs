@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MvvmToolkit.Navigation
+namespace MvvmToolkit.Navigation;
+
+public interface INavigationService
 {
-    public interface INavigationService
-    {
-        Task Navigate(Uri navigationUri);
+    Task Navigate(Uri navigationUri);
 
-        Task Navigate(string navigationUri);
+    Task Navigate(string navigationUri);
 
-        Task GoBack();
+    Task GoBack();
 
-        void ClearAllBackEntries();
-    }
+    void ClearAllBackEntries();
 }

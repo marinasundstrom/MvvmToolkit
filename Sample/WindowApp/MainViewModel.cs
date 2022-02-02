@@ -1,32 +1,32 @@
 ﻿using System.Threading.Tasks;
+
 using MvvmToolkit;
 using MvvmToolkit.Windowing;
 
-namespace WindowApp
+namespace WindowApp;
+
+public class MainViewModel : BindableObject, IWindowAware
 {
-    public class MainViewModel : BindableObject, IWindowAware
+    private readonly IWindowManager windowManager;
+    private Command openWindowCommand;
+
+    public MainViewModel(IWindowManager windowManager)
     {
-        private readonly IWindowManager windowManager;
-        private Command openWindowCommand;
+        this.windowManager = windowManager;
+    }
 
-        public MainViewModel(IWindowManager windowManager)
-        {
-            this.windowManager = windowManager;
-        }
+    public Command OpenWindowCommand => openWindowCommand ?? (openWindowCommand = new Command(async () =>
+    {
+        await windowManager.ShowWindowAsync("FooWindow");
+    }));
 
-        public Command OpenWindowCommand => openWindowCommand ?? (openWindowCommand = new Command(async () =>
-        {
-            await windowManager.ShowWindowAsync("FooWindow");
-        }));
+    public Task OnClosed()
+    {
+        return Task.CompletedTask;
+    }
 
-        public Task OnClosed()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task OnShown(params object[] args)
-        {
-            return Task.CompletedTask;
-        }
+    public Task OnShown(params object[] args)
+    {
+        return Task.CompletedTask;
     }
 }

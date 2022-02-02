@@ -1,29 +1,28 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace MvvmToolkit.Wpf
+namespace MvvmToolkit.Wpf;
+
+public static class TreeHelper
 {
-    public static class TreeHelper
+    public static T GetParent<T>(DependencyObject child)
+        where T : DependencyObject
     {
-        public static T GetParent<T>(DependencyObject child)
-            where T : DependencyObject
+        DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+        if (parentObject == null)
         {
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+            return null;
+        }
 
-            if (parentObject == null)
-            {
-                return null;
-            }
-
-            var parent = parentObject as T;
-            if (parent != null)
-            {
-                return parent;
-            }
-            else
-            {
-                return GetParent<T>(parentObject);
-            }
+        var parent = parentObject as T;
+        if (parent != null)
+        {
+            return parent;
+        }
+        else
+        {
+            return GetParent<T>(parentObject);
         }
     }
 }

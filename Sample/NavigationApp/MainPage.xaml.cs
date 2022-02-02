@@ -1,16 +1,15 @@
 ﻿using MvvmToolkit.Navigation.WPF;
 
-namespace NavigationApp
+namespace NavigationApp;
+
+/// <summary>
+/// Interaction logic for MainPage.xaml
+/// </summary>
+public partial class MainPage : BasePage
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
-    public partial class MainPage : BasePage
+    public MainPage(MainViewModel mainViewModel)
+        : base(mainViewModel)
     {
-        public MainPage(MainViewModel mainViewModel)
-            : base(mainViewModel)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

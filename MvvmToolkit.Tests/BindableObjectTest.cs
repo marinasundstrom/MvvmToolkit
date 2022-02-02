@@ -3,46 +3,46 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Xunit;
 
-namespace MvvmToolkit.Tests
+namespace MvvmToolkit.Tests;
+
+public class BindableObjectTest
 {
-    public class BindableObjectTest
+    [Fact(DisplayName = "PropertyChanged is invoked when property changed")]
+    public void PropertyChangedIsInvokedWhenPropertyChanged()
     {
-        [Fact(DisplayName = "PropertyChanged is invoked when property changed")]
-        public void PropertyChangedIsInvokedWhenPropertyChanged()
+        string expectedValue = "test";
+
+        TestBindableObject bindableObject = new TestBindableObject();
+
+        AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+
+        Assert.Null(bindableObject.Foo);
+
+        bindableObject.PropertyChanged += async (s, e) =>
         {
-            string expectedValue = "test";
+            await Task.Delay(500);
 
-            TestBindableObject bindableObject = new TestBindableObject();
+            autoResetEvent.Set();
+        };
 
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+        bindableObject.Foo = expectedValue;
 
-            Assert.Null(bindableObject.Foo);
+        autoResetEvent.WaitOne();
 
-            bindableObject.PropertyChanged += async (s, e) =>
-            {
-                await Task.Delay(500);
-
-                autoResetEvent.Set();
-            };
-
-            bindableObject.Foo = expectedValue;
-
-            autoResetEvent.WaitOne();
-
-            Assert.Equal(expectedValue, bindableObject.Foo);
-        }
+        Assert.Equal(expectedValue, bindableObject.Foo);
     }
+}
 
-    public class TestBindableObject : BindableObject
+public class TestBindableObject : BindableObject
+{
+    private string foo;
+
+    public string Foo
     {
-        private string foo;
-
-        public string Foo
-        {
-            get => foo;
-            set => SetProperty(ref foo, value);
-        }
+        get => foo;
+        set => SetProperty(ref foo, value);
     }
 }

@@ -1,16 +1,15 @@
 ﻿using MvvmToolkit.Windowing.WPF;
 
-namespace WindowApp
+namespace WindowApp;
+
+/// <summary>
+/// Interaction logic for DialogWindow.xaml
+/// </summary>
+public partial class DialogWindow : BaseDialog<DialogResult>
 {
-    /// <summary>
-    /// Interaction logic for DialogWindow.xaml
-    /// </summary>
-    public partial class DialogWindow : BaseDialog<DialogResult>
+    public DialogWindow(DialogViewModel dialogViewModel)
+        : base(dialogViewModel)
     {
-        public DialogWindow(DialogViewModel dialogViewModel)
-            : base(dialogViewModel)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-namespace MvvmToolkit.Navigation
+namespace MvvmToolkit.Navigation;
+
+public interface IPage
 {
-    public interface IPage
-    {
-        Task OnNavigatedTo(NavigationContext navigationContext);
-        Task OnNavigatedFrom(NavigationContext navigationContext);
-    }
+    Task OnNavigatedTo(NavigationContext navigationContext);
+    Task OnNavigatedFrom(NavigationContext navigationContext);
 }
