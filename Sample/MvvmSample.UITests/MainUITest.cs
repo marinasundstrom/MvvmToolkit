@@ -12,36 +12,34 @@ public class MainUITest : TestsBase
     [Fact(DisplayName = "Search button is disabled by default")]
     public void SearchButtonIsDisabledByDefault()
     {
-        Assert.False(session.FindElementByAccessibilityId("SearchButton").Enabled);
+        Assert.False(SearchButton.Enabled);
     }
 
     [Fact(DisplayName = "Enter text and Search button is enabled")]
     public void InputTextAndSearchButtonNotDisabled()
     {
-        session.FindElementByAccessibilityId("SearchTextBox").SendKeys("Foo");
+        SearchTextBox.SendKeys("Foo");
 
-        Assert.True(session.FindElementByAccessibilityId("SearchButton").Enabled);
+        Assert.True(SearchButton.Enabled);
     }
 
     [Fact(DisplayName = "Clear input box and Search button is disabled")]
     public void ClearInputBoxAndSearchButtonIsDisabled()
     {
-        session.FindElementByAccessibilityId("SearchTextBox").Clear();
+        SearchTextBox.Clear();
 
-        Assert.False(session.FindElementByAccessibilityId("SearchButton").Enabled);
+        Assert.False(SearchButton.Enabled);
     }
 
     [Fact(DisplayName = "Enter text, click Search button and result loads")]
     public async Task InputTextAndClickSearchButtonAndResultLoads()
     {
-        session.FindElementByAccessibilityId("SearchTextBox").SendKeys("Foo");
-        session.FindElementByAccessibilityId("SearchButton").Click();
+        SearchTextBox.SendKeys("Foo");
+        SearchButton.Click();
 
         await Task.Delay(1000);
 
-        WindowsElement searchResults = session.FindElementByAccessibilityId("SearchResults");
-
-        AppiumWebElement resultItem = searchResults.FindElementByXPath("//*[contains(@Name, \"Result 1\")]");
+        AppiumWebElement resultItem = SearchResults.FindElementByXPath("//*[contains(@Name, \"Result 1\")]");
 
         Assert.NotNull(resultItem);
     }

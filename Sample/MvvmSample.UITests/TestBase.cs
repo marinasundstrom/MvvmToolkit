@@ -35,6 +35,12 @@ public abstract class TestsBase : IDisposable
         }
     }
 
+    public WindowsElement SearchTextBox => session.FindElementByAccessibilityId("SearchTextBox");
+    
+    public WindowsElement SearchButton => session.FindElementByAccessibilityId("SearchButton");
+
+    public WindowsElement SearchResults => session.FindElementByAccessibilityId("SearchResults");
+
     public void Dispose()
     {
         // Close the application and delete the session
