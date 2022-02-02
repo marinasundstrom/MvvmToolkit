@@ -10,7 +10,7 @@ namespace MvvmSample.UITests
     public abstract class TestsBase : IDisposable
     {
         // Note: append /wd/hub to the URL if you're directing the test at Appium
-        private const string WindowsApplicationDriverUrl = "http://127.0.0.1:4727";
+        private const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 
         protected static WindowsDriver<WindowsElement> session;
 
@@ -18,7 +18,7 @@ namespace MvvmSample.UITests
         {
             if (session == null)
             {
-                string executablePath = Path.GetFullPath(@"..\..\..\..\MvvmSample\bin\Debug\netcoreapp3.0\MvvmSample.exe");
+                string executablePath = Path.GetFullPath(@"..\..\..\..\MvvmSample\bin\Debug\net6.0-windows\MvvmSample.exe");
 
 
                 var appiumOptions = new AppiumOptions();
