@@ -17,14 +17,16 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"
+            IsEnabled="{Binding IsEnabled}" />
         <Button
             x:Name="SearchButton"
             Margin="400,123,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding SearchCommand}"
-            Content="Search" />
+            Content="Search"
+            IsEnabled="{Binding IsEnabled}" />
         <ListView
             x:Name="SearchResults"
             Margin="138,217,169,58"

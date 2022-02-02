@@ -20,7 +20,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.9.22" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.22" />
+    <PackageReference Include="Shouldly" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="**\**.feature" />
   </ItemGroup>
 
 </Project>

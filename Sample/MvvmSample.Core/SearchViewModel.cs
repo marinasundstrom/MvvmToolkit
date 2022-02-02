@@ -12,10 +12,13 @@ namespace MvvmSample
             this.searchClient = searchClient;
 
             SearchResults = new ObservableCollection<SearchResults>();
+            IsEnabled = true;
         }
 
         private string searchText;
         private Command searchCommand;
+        private bool isEnabled;
+
         private readonly ISearchClient searchClient;
 
         public string SearchText
@@ -28,16 +31,26 @@ namespace MvvmSample
             }
         }
 
+        public bool IsEnabled
+        {
+            get => isEnabled;
+            set => SetProperty(ref isEnabled, value);
+        }
+
         public ObservableCollection<SearchResults> SearchResults { get; }
 
         public ICommand SearchCommand => searchCommand ?? (searchCommand = new Command(async () =>
         {
+            IsEnabled = false;
+
             SearchResults.Clear();
 
             await foreach (SearchResults result in searchClient.SearchAsync(SearchText))
             {
                 SearchResults.Add(result);
             }
+
+            IsEnabled = true;
         },
         () => !string.IsNullOrEmpty(searchText)));
     }
