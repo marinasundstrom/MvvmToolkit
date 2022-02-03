@@ -9,7 +9,10 @@ A simple tookit with common utilities used when leveraging the MVVM pattern.
 * Unit Tests
 * Sample projects (WPF) with Unit Tests and UI Tests 
 
-## UI Tests
-Requires the WinAppDriver. 
+## Sample
+### Automated UI Tests
+The sample project has automated UI tests that use WinAppDriver.
 
-For more information on how to set up, read [this](https://github.com/microsoft/WinAppDriver).
+There are also tests written using SpecFlow and Gherkin syntax.
+
+To get started with WinAppDriver, read [this](/docs/WinAppDriver.md).
