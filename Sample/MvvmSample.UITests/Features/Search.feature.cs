@@ -109,23 +109,23 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
-testRunner.Given("that the Search box is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("that you have not entered a search term", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
-testRunner.Then("the Search button should be disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("you should not be able to search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Search box is disabled when searching")]
+        [Xunit.SkippableFactAttribute(DisplayName="Should not be able to search while search is being performed")]
         [Xunit.TraitAttribute("FeatureTitle", "Search")]
-        [Xunit.TraitAttribute("Description", "Search box is disabled when searching")]
-        public virtual void SearchBoxIsDisabledWhenSearching()
+        [Xunit.TraitAttribute("Description", "Should not be able to search while search is being performed")]
+        public virtual void ShouldNotBeAbleToSearchWhileSearchIsBeingPerformed()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search box is disabled when searching", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should not be able to search while search is being performed", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -147,13 +147,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 13
-testRunner.Given("that i have entered something in the Search box", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("that you have entered a search term", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
-testRunner.When("I click the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("you initiate a new search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
-testRunner.Then("the Search box should be disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("you cannot start another search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

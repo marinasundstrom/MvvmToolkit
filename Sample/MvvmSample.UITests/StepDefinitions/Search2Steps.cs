@@ -4,26 +4,26 @@ using System.Threading.Tasks;
 
 namespace MvvmSample.UITests.StepDefinitions;
 
-[Scope(Scenario = "Search box is disabled when searching")]
+[Scope(Scenario = "Should not be able to search while search is being performed")]
 [Binding]
 public class Search2Steps : TestsBase
 {
-    [Given(@"that i have entered something in the Search box")]
-    public void GivenThatIHaveEnteredSomethingInTheSearchBox()
+    [Given(@"that you have entered a search term")]
+    public void ThatIHaveEnteredASearchTerm()
     {
         SearchTextBox.SendKeys("Foo");
     }
 
-    [When(@"I click the Search button")]
-    public async Task WhenIClickTheSearchButton() 
+    [When(@"you initiate a new search")]
+    public async Task WhenYouInitiateANewSearch() 
     {
         SearchButton.Click();
 
         await Task.Delay(50); 
     }
 
-    [Then(@"the Search box should be disabled")]
-    public void ThenTheSearchBoxShouldBeDisabled()
+    [Then(@"you cannot start another search")]
+    public void ThenYouCannotStartAnotherSearch()
     {
         SearchTextBox.Enabled.ShouldBeFalse();
     }
