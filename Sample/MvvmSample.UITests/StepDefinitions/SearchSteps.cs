@@ -8,14 +8,14 @@ namespace MvvmSample.UITests.StepDefinitions;
 [Binding]
 public class SearchSteps : TestsBase
 {
-    [Given(@"that the Search box is empty")]
-    public void GivenThatTheSearchBoxIsEmpty()
+    [Given(@"that you have not entered a search term")]
+    public void GivenThatYouHaveNotEnteredASearchTerm()
     {
         SearchTextBox.Text.ShouldBeEmpty();
     }
 
-    [Then(@"the Search button should be disabled")]
-    public void ThenTheSearchButtonShouldBeDisabled()
+    [Then(@"you should not be able to search")]
+    public void ThenYouShouldNotBeAbleToSearch()
     {
         SearchButton.IsEnabled.ShouldBeFalse();
     }

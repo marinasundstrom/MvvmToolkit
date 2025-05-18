@@ -2,7 +2,7 @@
 
 Enable ```Developer Mode``` in Windows.
 
-Install WinAppDriver.
+Install WinAppDriver. (Download it from [here](https://github.com/microsoft/WinAppDriver))
 
 Add Firewall rule, in order to be able to access the service from remote:
 
