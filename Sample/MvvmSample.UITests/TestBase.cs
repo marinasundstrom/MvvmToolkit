@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Windows;
-using OpenQA.Selenium.Remote;
+using FlaUI.Core;
+using FlaUI.Core.AutomationElements;
+using FlaUI.UIA3;
 
 using Xunit;
 
@@ -11,43 +11,41 @@ namespace MvvmSample.UITests;
 
 public abstract class TestsBase : IDisposable
 {
-    // Note: append /wd/hub to the URL if you're directing the test at Appium
-    private const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
-
-    protected static WindowsDriver<WindowsElement> session;
+    private static Application? _application;
+    private static AutomationBase? _automation;
+    private static Window? _mainWindow;
 
     protected TestsBase()
     {
-        if (session == null)
+        if (_application == null)
         {
-            string executablePath = Path.GetFullPath(@"..\..\..\..\MvvmSample\bin\Debug\net6.0-windows\MvvmSample.exe");
+            string executablePath = Path.GetFullPath(@"..\..\..\..\MvvmSample\bin\Debug\net9.0-windows\MvvmSample.exe");
 
+            _application = Application.Launch(executablePath);
+            _automation = new UIA3Automation();
+            _mainWindow = _application.GetMainWindow(_automation);
 
-            var appiumOptions = new AppiumOptions();
-            appiumOptions.AddAdditionalCapability("app", executablePath);
-            appiumOptions.AddAdditionalCapability("deviceName", "WindowsPC");
-            session = new WindowsDriver<WindowsElement>(new Uri(WindowsApplicationDriverUrl), appiumOptions);
-
-            Assert.NotNull(session);
-
-            // Set implicit timeout to 1.5 seconds to make element search to retry every 500 ms for at most three times
-            session.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1.5);
+            Assert.NotNull(_mainWindow);
         }
     }
 
-    public WindowsElement SearchTextBox => session.FindElementByAccessibilityId("SearchTextBox");
-    
-    public WindowsElement SearchButton => session.FindElementByAccessibilityId("SearchButton");
+    protected Window MainWindow => _mainWindow!;
 
-    public WindowsElement SearchResults => session.FindElementByAccessibilityId("SearchResults");
+    public TextBox SearchTextBox =>
+        MainWindow.FindFirstDescendant(cf => cf.ByAutomationId("SearchTextBox"))!.AsTextBox();
+
+    public Button SearchButton =>
+        MainWindow.FindFirstDescendant(cf => cf.ByAutomationId("SearchButton"))!.AsButton();
+
+    public ListBox SearchResults =>
+        MainWindow.FindFirstDescendant(cf => cf.ByAutomationId("SearchResults"))!.AsListBox();
 
     public void Dispose()
     {
-        // Close the application and delete the session
-        if (session != null)
-        {
-            session.Quit();
-            session = null;
-        }
+        _automation?.Dispose();
+        _application?.Close();
+        _application = null;
+        _automation = null;
+        _mainWindow = null;
     }
 }

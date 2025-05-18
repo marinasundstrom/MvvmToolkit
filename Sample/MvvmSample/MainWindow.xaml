@@ -12,6 +12,7 @@
     <Grid>
         <TextBox
             x:Name="SearchTextBox"
+            AutomationProperties.AutomationId="SearchTextBox"
             Width="120"
             Margin="219,123,0,0"
             HorizontalAlignment="Left"
@@ -21,6 +22,7 @@
             IsEnabled="{Binding IsEnabled}" />
         <Button
             x:Name="SearchButton"
+            AutomationProperties.AutomationId="SearchButton"
             Margin="400,123,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -29,6 +31,7 @@
             IsEnabled="{Binding IsEnabled}" />
         <ListView
             x:Name="SearchResults"
+            AutomationProperties.AutomationId="SearchResults"
             Margin="138,217,169,58"
             ItemsSource="{Binding SearchResults}">
             <ListView.ItemTemplate>

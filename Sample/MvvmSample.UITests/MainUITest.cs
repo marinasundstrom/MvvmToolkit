@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Windows;
+using FlaUI.Core.AutomationElements;
 
 using Xunit;
 
@@ -9,37 +8,40 @@ namespace MvvmSample.UITests;
 
 public class MainUITest : TestsBase
 {
-    [Fact(DisplayName = "Search button is disabled by default", Skip = "Foo")]
+    private TextBox SearchTextBoxElement => SearchTextBox.AsTextBox();
+    private Button SearchButtonElement => SearchButton.AsButton();
+
+    [Fact(DisplayName = "Search button is disabled by default")]
     public void SearchButtonIsDisabledByDefault()
     {
-        Assert.False(SearchButton.Enabled);
+        Assert.False(SearchButtonElement.IsEnabled);
     }
 
-    [Fact(DisplayName = "Enter text and Search button is enabled", Skip = "Foo")]
+    [Fact(DisplayName = "Enter text and Search button is enabled")]
     public void InputTextAndSearchButtonNotDisabled()
     {
-        SearchTextBox.SendKeys("Foo");
+        SearchTextBoxElement.Enter("Foo");
 
-        Assert.True(SearchButton.Enabled);
+        Assert.True(SearchButtonElement.IsEnabled);
     }
 
-    [Fact(DisplayName = "Clear input box and Search button is disabled", Skip = "Foo")]
+    [Fact(DisplayName = "Clear input box and Search button is disabled")]
     public void ClearInputBoxAndSearchButtonIsDisabled()
     {
-        SearchTextBox.Clear();
+        SearchTextBoxElement.Text = ""; // Clears the text
 
-        Assert.False(SearchButton.Enabled);
+        Assert.False(SearchButtonElement.IsEnabled);
     }
 
-    [Fact(DisplayName = "Enter text, click Search button and result loads", Skip = "Foo")]
+    [Fact(DisplayName = "Enter text, click Search button and result loads")]
     public async Task InputTextAndClickSearchButtonAndResultLoads()
     {
-        SearchTextBox.SendKeys("Foo");
-        SearchButton.Click();
+        SearchTextBoxElement.Enter("Foo");
+        SearchButtonElement.Click();
 
-        await Task.Delay(1000);
+        await Task.Delay(1000); // Consider replacing with polling logic if flaky
 
-        AppiumWebElement resultItem = SearchResults.FindElementByXPath("//*[contains(@Name, \"Result 1\")]");
+        var resultItem = SearchResults.FindFirstDescendant(cf => cf.ByName("Result 1"));
 
         Assert.NotNull(resultItem);
     }

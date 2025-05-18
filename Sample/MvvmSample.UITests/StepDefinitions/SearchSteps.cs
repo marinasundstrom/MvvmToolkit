@@ -1,4 +1,5 @@
-using TechTalk.SpecFlow;
+using Reqnroll;
+
 using Shouldly;
 
 namespace MvvmSample.UITests.StepDefinitions;
@@ -16,6 +17,6 @@ public class SearchSteps : TestsBase
     [Then(@"the Search button should be disabled")]
     public void ThenTheSearchButtonShouldBeDisabled()
     {
-        SearchButton.Enabled.ShouldBeFalse();
+        SearchButton.IsEnabled.ShouldBeFalse();
     }
 }
