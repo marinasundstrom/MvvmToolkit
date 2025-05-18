@@ -11,8 +11,8 @@ A simple tookit with common utilities used when leveraging the MVVM pattern.
 
 ## Sample
 ### Automated UI Tests
-The sample project has automated UI tests that use WinAppDriver.
+The sample project has automated UI tests that use FlaUI UIA3.
 
-There are also tests written using SpecFlow and Gherkin syntax.
+There also is Reqnroll (previously SpecFlow), that is used to define structured specifications for behavior, using the Gherkin language. From these specs you can generate unit test stubs.
 
-To get started with WinAppDriver, read [this](/docs/WinAppDriver.md).
+To get started with FlaUI UIA3, read [this](https://github.com/FlaUI/FlaUI)
